@@ -42,10 +42,11 @@ class Model(object):
 
         with tf.name_scope('BPR'):
             if not is_training:
-                self.pred = tf.reduce_sum(tf.matmul(pos,adaptive_user_pos))
+                self.pred = tf.squeeze(tf.matmul(pos,adaptive_user_pos))
                 return
             else:
-                self.pred = -tf.reduce_sum(tf.matmul((pos-neg),adaptive_user_pos))
+                self.pred = tf.squeeze(tf.matmul((pos-neg),adaptive_user_pos))
+
 
         self.losses = -tf.log(tf.sigmoid(self.pred))
         self.l2_loss += tf.nn.l2_loss(item_embedding)
